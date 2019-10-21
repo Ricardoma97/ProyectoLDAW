@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const piloto = require('../models/piloto');
+const destino = require('../models/destino');
 const jwt= require('jsonwebtoken');
 
-// pilotos listing get/
+// destinos listing get/
 router.get('/', verifyToken,(req, res, next)=>{
 	jwt.verify(
 		req.token,
 		'secretKey',
 		(err,authData)=>{
 			if(err) next(err);
-			piloto.find({})
+			destino.find({})
 				.then(result =>{
 					if(result.length){
 						res.status(200).json({result});
@@ -23,7 +23,7 @@ router.get('/', verifyToken,(req, res, next)=>{
 		}
 	)
 });
-//index piloto
+//index destino
 router.get('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
@@ -31,37 +31,37 @@ router.get('/:id', verifyToken, function(req, res, next) {
 		(err, authData) => {
 			if(err) next(err);
 
-			piloto.findById(req.params.id).populate('bearer', '_id super_name')
+			destino.findById(req.params.id).populate('bearer', '_id super_name')
 				.then(result => {
 					if(result)
 						res.status(200).json({
-							piloto: result
+							destino: result
 						});
 					else
-						res.status(404).send('piloto not found');
+						res.status(404).send('destino not found');
 				})
 				.catch(next)
 		}
 	)
 })
 
-/* POST /pilotos */
+/* POST /destinos */
 router.post('/', (req, res)=>{
 	let body = req.body;
-	let newpiloto = new piloto({
+	let newdestino = new destino({
 		_id: mongoose.Types.ObjectId(),
 		...body
 	})
-	newpiloto.save()
+	newdestino.save()
 		.then(result => {
 			res.status(201).send(result);
 		})
 		.catch(error =>{
-			res.status(500).send("Couldn't register piloto");
+			res.status(500).send("Couldn't register destino");
 		})
 });
 
-// PUT piloto
+// PUT destino
 router.put('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
@@ -69,28 +69,28 @@ router.put('/:id', verifyToken, function(req, res, next) {
 		(err, authData) => {
 			if(err) next(err);
 			let body = req.body;
-			piloto.findByIdAndUpdate(req.params.id, req.body, { new: true })
+			destino.findByIdAndUpdate(req.params.id, req.body, { new: true })
 				.then(result => {
 					if(result)
 						res.status(201).json({
-							piloto: result
+							destino: result
 						});
 					else
-						res.status(404).send('Cant update, piloto is missing');
+						res.status(404).send('Cant update, destino is missing');
 				})
 				.catch(next)
 		}
 	)
 })
 
-// DELETE piloto
+// DELETE destino
 router.delete('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
 		'secretKey',
 		(err, authData) => {
 			if(err) next(err);
-			piloto.findByIdAndRemove(req.params.id)
+			destino.findByIdAndRemove(req.params.id)
 				.then(() => res.status(204).send() )
 				.catch(next)
 		}

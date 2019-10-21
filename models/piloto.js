@@ -8,7 +8,6 @@ const PilotoSchema = new mongoose.Schema({
 	direccion:String,
 	mail:String,
 	numeberOfFlights:Number
-	}
 });
 
 module.exports = mongoose.model('pilotos', PilotoSchema);

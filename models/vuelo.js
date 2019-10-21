@@ -4,11 +4,12 @@ const VueloSchema = new mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	destino: String,
 	tipoDeVuelo: String,
-	date:Date,
+	arrivalDate:Date,
+	launchDate: Date,
 	capacidad:Number,
-	piloto:{//Piloto
-		id_referencia: ObjectId,
-		photo:String,//o img
+	piloto:{
+		id_referencia: mongoose.Schema.Types.ObjectId,
+		photo:String,
 		Name:String,
 		Birthday:Date,
 		Direccion:String,

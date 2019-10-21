@@ -1,29 +1,29 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const piloto = require('../models/piloto');
+const vuelo = require('../models/vuelo');
 const jwt= require('jsonwebtoken');
 
-// pilotos listing get/
+// vuelos listing get/
 router.get('/', verifyToken,(req, res, next)=>{
 	jwt.verify(
 		req.token,
 		'secretKey',
 		(err,authData)=>{
 			if(err) next(err);
-			piloto.find({})
+			vuelo.find({})
 				.then(result =>{
 					if(result.length){
 						res.status(200).json({result});
 					}else{
-						res.status(404).json({message: 'There are no pilots'});
+						res.status(404).json({message: 'There are no flights'});
 					}
 				})
 				.catch(next)
 		}
 	)
 });
-//index piloto
+//index vuelo
 router.get('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
@@ -31,37 +31,37 @@ router.get('/:id', verifyToken, function(req, res, next) {
 		(err, authData) => {
 			if(err) next(err);
 
-			piloto.findById(req.params.id).populate('bearer', '_id super_name')
+			vuelo.findById(req.params.id).populate('bearer', '_id super_name')
 				.then(result => {
 					if(result)
 						res.status(200).json({
-							piloto: result
+							vuelo: result
 						});
 					else
-						res.status(404).send('piloto not found');
+						res.status(404).send('vuelo not found');
 				})
 				.catch(next)
 		}
 	)
 })
 
-/* POST /pilotos */
+/* POST /vuelos */
 router.post('/', (req, res)=>{
 	let body = req.body;
-	let newpiloto = new piloto({
+	let newvuelo = new vuelo({
 		_id: mongoose.Types.ObjectId(),
 		...body
 	})
-	newpiloto.save()
+	newvuelo.save()
 		.then(result => {
 			res.status(201).send(result);
 		})
 		.catch(error =>{
-			res.status(500).send("Couldn't register piloto");
+			res.status(500).send("Couldn't register vuelo");
 		})
 });
 
-// PUT piloto
+// PUT vuelo
 router.put('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
@@ -69,28 +69,28 @@ router.put('/:id', verifyToken, function(req, res, next) {
 		(err, authData) => {
 			if(err) next(err);
 			let body = req.body;
-			piloto.findByIdAndUpdate(req.params.id, req.body, { new: true })
+			vuelo.findByIdAndUpdate(req.params.id, req.body, { new: true })
 				.then(result => {
 					if(result)
 						res.status(201).json({
-							piloto: result
+							vuelo: result
 						});
 					else
-						res.status(404).send('Cant update, piloto is missing');
+						res.status(404).send('Cant update, vuelo is missing');
 				})
 				.catch(next)
 		}
 	)
 })
 
-// DELETE piloto
+// DELETE vuelo
 router.delete('/:id', verifyToken, function(req, res, next) {
 	jwt.verify(
 		req.token,
 		'secretKey',
 		(err, authData) => {
 			if(err) next(err);
-			piloto.findByIdAndRemove(req.params.id)
+			vuelo.findByIdAndRemove(req.params.id)
 				.then(() => res.status(204).send() )
 				.catch(next)
 		}

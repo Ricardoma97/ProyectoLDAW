@@ -5,7 +5,6 @@ const DestinosSchema = new mongoose.Schema({
 	name: String,
 	photo: String,//img
 	distanceFromEarth: Number
-	}
 });
 
 module.exports = mongoose.model('destinos', DestinosSchema);
