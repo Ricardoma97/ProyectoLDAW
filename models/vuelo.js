@@ -10,9 +10,9 @@ const VueloSchema = new mongoose.Schema({
 	piloto:{
 		id_referencia: mongoose.Schema.Types.ObjectId,
 		photo:String,
-		Name:String,
-		Birthday:Date,
-		Direccion:String,
+		name:String,
+		birthday:Date,
+		direccion:String,
 		mail:String,
 		numeberOfFlights:Number
 	}

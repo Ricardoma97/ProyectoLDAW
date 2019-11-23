@@ -12,12 +12,17 @@ const estacionesRouter = require('./routes/estaciones');
 const vuelosRouter = require('./routes/vuelos');
 const ticketsRouter = require('./routes/tickets');
 
-mongoose.connect('mongodb://127.0.0.1:27017/Andromeda',
-	{ userNewUrlParser: true, useUnifiedTopology: true}
+mongoose.connect('mongodb+srv://Ric:1234@andromcloster-57ngp.mongodb.net/test?retryWrites=true&w=majority',
+	{ useNewUrlParser: true, useUnifiedTopology: true}
 );
-
 const app = express();
-
+// app.set('view engine', 'jade');
+app.use(function(req,res,next){
+	res.header('Access-Control-Allow-Origin',"*");
+	res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+	res.header('Access-Control-Allow-Headers','Content-Type,Token,Authorization');
+	next();
+})
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

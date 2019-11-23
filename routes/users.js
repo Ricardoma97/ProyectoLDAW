@@ -14,7 +14,9 @@ router.get('/', verifyToken,(req, res, next)=>{
 			User.find({})
 				.then(result =>{
 					if(result.length){
+						console.log({result})
 						res.status(200).json({result});
+
 					}else{
 						res.status(404).json({message: 'Dersnopipol!'});
 					}
